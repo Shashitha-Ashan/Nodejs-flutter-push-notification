@@ -1,15 +1,16 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 
 const app = express();
 const port = 3000;
-
 const admin = require("firebase-admin");
-
 const serviceAccount = require("./serviceAccountKey.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post("api/v1/notification/send", async (req, res) => {
   const { title, body, deviceID } = req.body;
